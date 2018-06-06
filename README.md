@@ -14,6 +14,11 @@ Sync between iCloud and Realm
 - [ ] Same device different iCloud account
 - [ ] Background long task
 
+## Requirement
+* iOS 10.0
+* swift 4.0
+* Xcode 9.0
+
 ## Usage
 1. model
 ```swift
