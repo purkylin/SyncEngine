@@ -12,8 +12,8 @@ import RealmSwift
 
 internal let customZoneName = "kingprivatezone"
 
-class SyncEngine {
-    static let `default` = SyncEngine()
+public final class SyncEngine {
+    public static let `default` = SyncEngine()
     let container = CKContainer.default()
     let databases: [Database]
     
@@ -40,10 +40,13 @@ class SyncEngine {
     }
     
     public func sync() {
+        assert(models.count > 0, "Error You havn't register any model")
         databases.forEach { $0.syncLocalChanges() }
     }
     
     public func start() {
+        // Add item CKSharingSupported in your Info.plist if you use share
+        
         for database in databases {
             if UserDefaults.standard.bool(forKey: DefaultsKey.subscriptionSaveKey) {
                 fetchChanges(from: database)
@@ -56,6 +59,25 @@ class SyncEngine {
                 self.fetchChanges(from: database)
             }
         }
+    }
+    
+    public func didReceiveRemoteNotification(userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let appState = UIApplication.shared.applicationState
+        guard let userInfo = userInfo as? [String: NSObject],
+            appState != .inactive else { return }
+        
+        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
+        guard let subscriptionID = notification.subscriptionID else { return }
+        if notification.notificationType == .database {
+            for database in SyncEngine.default.databases {
+                if database.cloudKitDB.name == subscriptionID {
+                    SyncEngine.default.fetchChanges(from: database)
+                    break
+                }
+                
+            }
+        }
+        completionHandler(.noData)
     }
     
     // Post the notification after all the operations are done so that observers can update the UI
@@ -188,7 +210,7 @@ class SyncEngine {
         container.add(acceptSharesOperation)
     }
     
-    func saveShare(record: CKRecord, completion:@escaping (CKShare?, Error?) -> Void) {
+    public func saveShare(record: CKRecord, completion:@escaping (CKShare?, Error?) -> Void) {
         var share: CKShare?
         if let shareID = record.share?.recordID {
             share = KeyStore.shared.record(id: shareID.recordName) as? CKShare
@@ -218,5 +240,18 @@ class SyncEngine {
         
         container.privateCloudDatabase.add(modifyRecordsOperation)
     }
+    
+//    public func addParty(email: String, to record: CKRecord) {
+//        var share: CKShare?
+//        if let shareID = record.share?.recordID {
+//            share = KeyStore.shared.record(id: shareID.recordName) as? CKShare
+//        }
+//        
+//        if share == nil {
+//            share = CKShare(rootRecord: record)
+//        }
+//        
+//        let participant = CKShareParticipant(coder: email)
+//    }
 
 }

@@ -22,10 +22,10 @@ class KeyStoreModel: Object {
     }
 }
 
-class KeyStore {
-    static let shared = KeyStore()
+final public class KeyStore {
+    public static let shared = KeyStore()
     
-    subscript(key: String) -> Data? {
+    public subscript(key: String) -> Data? {
         get {
             let realm = try! Realm()
             return realm.object(ofType: KeyStoreModel.self, forPrimaryKey: key)?.value

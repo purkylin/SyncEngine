@@ -18,7 +18,48 @@
 		0DC903EE20C7CD8E0072B3D4 /* DefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC903ED20C7CD8E0072B3D4 /* DefaultsKey.swift */; };
 		0DC903F120C7CF470072B3D4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903EF20C7CF470072B3D4 /* Realm.framework */; };
 		0DC903F220C7CF470072B3D4 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903F020C7CF470072B3D4 /* RealmSwift.framework */; };
+		0DC903FA20C8F0C60072B3D4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC903F920C8F0C60072B3D4 /* AppDelegate.swift */; };
+		0DC903FC20C8F0C60072B3D4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC903FB20C8F0C60072B3D4 /* ViewController.swift */; };
+		0DC903FF20C8F0C60072B3D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC903FD20C8F0C60072B3D4 /* Main.storyboard */; };
+		0DC9040120C8F0C70072B3D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC9040020C8F0C70072B3D4 /* Assets.xcassets */; };
+		0DC9040420C8F0C70072B3D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC9040220C8F0C70072B3D4 /* LaunchScreen.storyboard */; };
+		0DC9041120C8F4B30072B3D4 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC9041020C8F4B30072B3D4 /* EditViewController.swift */; };
+		0DC9041320C8F59D0072B3D4 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC9041220C8F59D0072B3D4 /* Note.swift */; };
+		0DC9041620C8F83A0072B3D4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC9041520C8F83A0072B3D4 /* CloudKit.framework */; };
+		0DC9041920C8F89D0072B3D4 /* SyncEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903CD20C7CA040072B3D4 /* SyncEngine.framework */; };
+		0DC9041A20C8F89D0072B3D4 /* SyncEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903CD20C7CA040072B3D4 /* SyncEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0DC9041B20C8F8D20072B3D4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903EF20C7CF470072B3D4 /* Realm.framework */; };
+		0DC9041C20C8F8D20072B3D4 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903EF20C7CF470072B3D4 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0DC9041D20C8F8D20072B3D4 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903F020C7CF470072B3D4 /* RealmSwift.framework */; };
+		0DC9041E20C8F8D20072B3D4 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC903F020C7CF470072B3D4 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0DC9042020C9029E0072B3D4 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC9041F20C9029E0072B3D4 /* InfoViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0DC9041720C8F8780072B3D4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0DC903C420C7CA040072B3D4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DC903CC20C7CA040072B3D4;
+			remoteInfo = SyncEngine;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0DC9040F20C8F1060072B3D4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0DC9041C20C8F8D20072B3D4 /* Realm.framework in Embed Frameworks */,
+				0DC9041A20C8F89D0072B3D4 /* SyncEngine.framework in Embed Frameworks */,
+				0DC9041E20C8F8D20072B3D4 /* RealmSwift.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0DC903CD20C7CA040072B3D4 /* SyncEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SyncEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,6 +77,18 @@
 		0DC903ED20C7CD8E0072B3D4 /* DefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsKey.swift; sourceTree = "<group>"; };
 		0DC903EF20C7CF470072B3D4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		0DC903F020C7CF470072B3D4 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		0DC903F720C8F0C60072B3D4 /* SyncEngineDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SyncEngineDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DC903F920C8F0C60072B3D4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0DC903FB20C8F0C60072B3D4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0DC903FE20C8F0C60072B3D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0DC9040020C8F0C70072B3D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0DC9040320C8F0C70072B3D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0DC9040520C8F0C70072B3D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DC9041020C8F4B30072B3D4 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
+		0DC9041220C8F59D0072B3D4 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		0DC9041420C8F8370072B3D4 /* SyncEngineDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SyncEngineDemo.entitlements; sourceTree = "<group>"; };
+		0DC9041520C8F83A0072B3D4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		0DC9041F20C9029E0072B3D4 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +101,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0DC903F420C8F0C60072B3D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DC9041B20C8F8D20072B3D4 /* Realm.framework in Frameworks */,
+				0DC9041620C8F83A0072B3D4 /* CloudKit.framework in Frameworks */,
+				0DC9041D20C8F8D20072B3D4 /* RealmSwift.framework in Frameworks */,
+				0DC9041920C8F89D0072B3D4 /* SyncEngine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				0DC903CF20C7CA040072B3D4 /* SyncEngine */,
+				0DC903F820C8F0C60072B3D4 /* SyncEngineDemo */,
 				0DC903CE20C7CA040072B3D4 /* Products */,
 				0DC903E620C7CC690072B3D4 /* Frameworks */,
 			);
@@ -64,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				0DC903CD20C7CA040072B3D4 /* SyncEngine.framework */,
+				0DC903F720C8F0C60072B3D4 /* SyncEngineDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,12 +162,30 @@
 		0DC903E620C7CC690072B3D4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DC9041520C8F83A0072B3D4 /* CloudKit.framework */,
 				0DC903EF20C7CF470072B3D4 /* Realm.framework */,
 				0DC903F020C7CF470072B3D4 /* RealmSwift.framework */,
 				0DC903E820C7CC690072B3D4 /* Realm.framework */,
 				0DC903E720C7CC690072B3D4 /* RealmSwift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0DC903F820C8F0C60072B3D4 /* SyncEngineDemo */ = {
+			isa = PBXGroup;
+			children = (
+				0DC9041420C8F8370072B3D4 /* SyncEngineDemo.entitlements */,
+				0DC903F920C8F0C60072B3D4 /* AppDelegate.swift */,
+				0DC903FB20C8F0C60072B3D4 /* ViewController.swift */,
+				0DC9041F20C9029E0072B3D4 /* InfoViewController.swift */,
+				0DC9041220C8F59D0072B3D4 /* Note.swift */,
+				0DC9041020C8F4B30072B3D4 /* EditViewController.swift */,
+				0DC903FD20C8F0C60072B3D4 /* Main.storyboard */,
+				0DC9040020C8F0C70072B3D4 /* Assets.xcassets */,
+				0DC9040220C8F0C70072B3D4 /* LaunchScreen.storyboard */,
+				0DC9040520C8F0C70072B3D4 /* Info.plist */,
+			);
+			path = SyncEngineDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,17 +221,51 @@
 			productReference = 0DC903CD20C7CA040072B3D4 /* SyncEngine.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		0DC903F620C8F0C60072B3D4 /* SyncEngineDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0DC9040620C8F0C70072B3D4 /* Build configuration list for PBXNativeTarget "SyncEngineDemo" */;
+			buildPhases = (
+				0DC903F320C8F0C60072B3D4 /* Sources */,
+				0DC903F420C8F0C60072B3D4 /* Frameworks */,
+				0DC903F520C8F0C60072B3D4 /* Resources */,
+				0DC9040F20C8F1060072B3D4 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0DC9041820C8F8780072B3D4 /* PBXTargetDependency */,
+			);
+			name = SyncEngineDemo;
+			productName = SyncEngineDemo;
+			productReference = 0DC903F720C8F0C60072B3D4 /* SyncEngineDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0DC903C420C7CA040072B3D4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Purkylin King";
 				TargetAttributes = {
 					0DC903CC20C7CA040072B3D4 = {
 						CreatedOnToolsVersion = 9.4;
+					};
+					0DC903F620C8F0C60072B3D4 = {
+						CreatedOnToolsVersion = 9.4;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -157,6 +275,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 0DC903C320C7CA040072B3D4;
 			productRefGroup = 0DC903CE20C7CA040072B3D4 /* Products */;
@@ -164,6 +283,7 @@
 			projectRoot = "";
 			targets = (
 				0DC903CC20C7CA040072B3D4 /* SyncEngine */,
+				0DC903F620C8F0C60072B3D4 /* SyncEngineDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -173,6 +293,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0DC903F520C8F0C60072B3D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DC9040420C8F0C70072B3D4 /* LaunchScreen.storyboard in Resources */,
+				0DC9040120C8F0C70072B3D4 /* Assets.xcassets in Resources */,
+				0DC903FF20C8F0C60072B3D4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,7 +344,46 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0DC903F320C8F0C60072B3D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DC903FC20C8F0C60072B3D4 /* ViewController.swift in Sources */,
+				0DC903FA20C8F0C60072B3D4 /* AppDelegate.swift in Sources */,
+				0DC9041120C8F4B30072B3D4 /* EditViewController.swift in Sources */,
+				0DC9041320C8F59D0072B3D4 /* Note.swift in Sources */,
+				0DC9042020C9029E0072B3D4 /* InfoViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0DC9041820C8F8780072B3D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0DC903CC20C7CA040072B3D4 /* SyncEngine */;
+			targetProxy = 0DC9041720C8F8780072B3D4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0DC903FD20C8F0C60072B3D4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0DC903FE20C8F0C60072B3D4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		0DC9040220C8F0C70072B3D4 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0DC9040320C8F0C70072B3D4 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0DC903D320C7CA040072B3D4 /* Debug */ = {
@@ -399,6 +568,54 @@
 			};
 			name = Release;
 		};
+		0DC9040720C8F0C70072B3D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SyncEngineDemo/SyncEngineDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QJSM3KYT6N;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = SyncEngineDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.purkylin.SyncEngineDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0DC9040820C8F0C70072B3D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SyncEngineDemo/SyncEngineDemo.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QJSM3KYT6N;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = SyncEngineDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.purkylin.SyncEngineDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -416,6 +633,15 @@
 			buildConfigurations = (
 				0DC903D620C7CA040072B3D4 /* Debug */,
 				0DC903D720C7CA040072B3D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0DC9040620C8F0C70072B3D4 /* Build configuration list for PBXNativeTarget "SyncEngineDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0DC9040720C8F0C70072B3D4 /* Debug */,
+				0DC9040820C8F0C70072B3D4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

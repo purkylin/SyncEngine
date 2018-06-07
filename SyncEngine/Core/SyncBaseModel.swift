@@ -25,6 +25,11 @@ extension CKRecord {
         unarchiver.requiresSecureCoding = true
         return CKRecord(coder: unarchiver)
     }
+    
+    public func sharedRecord() -> CKShare? {
+        guard let id = share?.recordID.recordName else { return nil }
+        return KeyStore.shared.record(id: id) as? CKShare
+    }
 }
 
 extension KeyStore {
@@ -38,15 +43,15 @@ extension KeyStore {
     }
 }
 
-class SyncBaseModel: Object {
-    @objc dynamic var id = UUID().uuidString
-    @objc dynamic var createdAt = Date()
-    @objc dynamic var modifiedAt = Date()
-    @objc dynamic var deleted = false
-    @objc dynamic var synced = false
+open class SyncBaseModel: Object {
+    @objc public dynamic var id = UUID().uuidString
+    @objc public dynamic var createdAt = Date()
+    @objc public dynamic var modifiedAt = Date()
+    @objc public dynamic var deleted = false
+    @objc public dynamic var synced = false
     
-    @objc dynamic var shared = false
-    @objc dynamic var readWrite = false
+    @objc public dynamic var shared = false
+    @objc public dynamic var readWrite = false
     
     static var recordType: String {
         return className()
@@ -57,7 +62,7 @@ class SyncBaseModel: Object {
         return CKRecordID(recordName: id, zoneID: zoneID)
     }
     
-    var syncRecord: CKRecord {
+    public var syncRecord: CKRecord {
         var record: CKRecord
         if let r = KeyStore.shared.record(id: id) {
             record = r
@@ -82,7 +87,7 @@ class SyncBaseModel: Object {
         return record
     }
     
-    static func from(record: CKRecord) -> SyncBaseModel {
+    public static func from(record: CKRecord) -> SyncBaseModel {
         guard let modelClass = NSClassFromString(record.recordType) as? SyncBaseModel.Type else { return SyncBaseModel() }
         let model = modelClass.init()
         for property in model.objectSchema.properties {
@@ -92,7 +97,7 @@ class SyncBaseModel: Object {
         return model
     }
     
-    override class func primaryKey() -> String? {
+    override open class func primaryKey() -> String? {
         return "id"
     }
 }
