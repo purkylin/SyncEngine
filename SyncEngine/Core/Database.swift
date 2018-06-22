@@ -35,6 +35,27 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
         }
     }
     
+    func addSubscription(to operationQueue: OperationQueue) {
+        var key: String
+        switch self.cloudKitDB.databaseScope {
+        case .public:
+            key = DefaultsKey.publicSubscriptionSaveKey
+        case .private:
+            key = DefaultsKey.privateSubscriptionSaveKey
+        case .shared:
+            key = DefaultsKey.sharedSubscriptionSaveKey
+        }
+        
+        if UserDefaults.standard.bool(forKey: key) {
+            return
+        }
+        
+        cloudKitDB.addDatabaseSubscription(subscriptionID: cloudKitDB.name, operationQueue: operationQueue) { error in
+            guard handleCloudKitError(error, operation: .modifySubscriptions) == nil else { return }
+            UserDefaults.standard.set(true, forKey: key)
+        }
+    }
+    
     // MARK: - Token
     public func readChangeToken() -> CKServerChangeToken? {
         let key = "ServerChangeToken-\(cloudKitDB.name)"
@@ -189,18 +210,15 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
             KeyStore.shared.save(record: record)
 
             if record.isKind(of: CKShare.self) {
-                if self.cloudKitDB.databaseScope == .private {
-                    // Do something
-                } else {
-                    print("share unknown")
-                }
+                // TODO Readwrite
             } else {
+                KeyStore.shared.save(record: record)
                 let realm = try! Realm()
                 // TODO: Compare
                 let obj = SyncBaseModel.from(record: record)
                 obj.synced = true
                 obj.modifiedAt = Date()
-                obj.shared = isShared
+                obj.ownerName = record.recordID.zoneID.ownerName
                 
                 try! realm.write {
                     realm.add(obj, update: true)
@@ -239,13 +257,6 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
     private func syncChanges(recordsToSave: [CKRecord]?, recordIDsToDelete: [CKRecordID]?) {
         let operation = CKModifyRecordsOperation(recordsToSave: recordsToSave, recordIDsToDelete: recordIDsToDelete)
         operation.modifyRecordsCompletionBlock = { (saveRecords, deleteRecordIDs, error) in
-//            guard let ckError = handleCloudKitError(error, operation: .modifyRecords) else { return }
-//
-//            if ckError.code == .zoneNotFound {
-//                print("zone not found")
-//                return
-//            }
-            
             let failure = self.retryWhenPossible(with: error, block: {
                 self.syncChanges(recordsToSave: saveRecords, recordIDsToDelete: deleteRecordIDs)
             })
@@ -257,6 +268,11 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
                 }
             } else {
                 self.handleError(error: error!, completion: { (records, error) in
+                    if error != nil {
+                        print(error!.localizedDescription)
+                        return
+                    }
+                    
                     if let count = records?.count, count > 0 {
                         self.syncChanges(recordsToSave: records, recordIDsToDelete: nil)
                     }
@@ -291,16 +307,18 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
     
     private func handleError(error: Error, completion: ([CKRecord]?, Error?) -> Void) {
         if let ckerror = error as? CKError {
-//            if ckerror.isZoneNotFound() {
-//                // TODO
-//                completion(nil, nil)
-//                return
-//            }
+            print(ckerror.localizedDescription)
+
+            if ckerror.isWriteFailure() {
+                completion(nil, error)
+                return
+            }
             
             switch ckerror.code {
             case .partialFailure:
                 let adjustedRecords = resolveConflict(error: ckerror, resolver: overrideUseClient)
                 completion(adjustedRecords, nil)
+                return
             default:
                 break
             }

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         engine.register(models: [Note.self])
         engine.start()
         
+        printPath()
         return true
     }
 
@@ -30,6 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         SyncEngine.default.didReceiveRemoteNotification(userInfo: userInfo, fetchCompletionHandler: completionHandler)
+    }
+    
+    func printPath() {
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        print("document path: \(path)")
     }
 }
 

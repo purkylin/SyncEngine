@@ -11,6 +11,10 @@ import Foundation
 class DefaultsKey {
     static let createCustomeZone = "createCustomeZone"
     static let subscriptionSaveKey = "subscriptionSaved"
+    static let publicSubscriptionSaveKey = "publicSubscriptionSaved"
+    static let privateSubscriptionSaveKey = "privateSubscriptionSaved"
+    static let sharedSubscriptionSaveKey = "sharedSubscriptionSaved"
+    
     static let privateChangesToken = "privateChangesToken"
     static let shareChangesToken = "shareChangesToken"
     static let fetchChangesToken = "fetchChangesToken"

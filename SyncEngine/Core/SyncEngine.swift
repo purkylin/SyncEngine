@@ -17,6 +17,8 @@ public final class SyncEngine {
     let container = CKContainer.default()
     let databases: [Database]
     
+    var disabled = false
+    
     internal var models = [SyncBaseModel.Type]()
     
     lazy var operationQueue: OperationQueue = {
@@ -40,24 +42,35 @@ public final class SyncEngine {
     }
     
     public func sync() {
+        guard disabled == false else { return }
         assert(models.count > 0, "Error You havn't register any model")
         databases.forEach { $0.syncLocalChanges() }
     }
     
     public func start() {
+        disabled = false
         // Add item CKSharingSupported in your Info.plist if you use share
-        
         for database in databases {
-            if UserDefaults.standard.bool(forKey: DefaultsKey.subscriptionSaveKey) {
-                fetchChanges(from: database)
-                continue
-            }
-            
-            database.cloudKitDB.addDatabaseSubscription(subscriptionID: database.cloudKitDB.name, operationQueue: operationQueue) { error in
-                guard handleCloudKitError(error, operation: .modifySubscriptions) == nil else { return }
-                UserDefaults.standard.set(true, forKey: DefaultsKey.subscriptionSaveKey)
-                self.fetchChanges(from: database)
-            }
+            database.addSubscription(to: operationQueue)
+        }
+        
+        fetchChanges()
+    }
+    
+    public func stop() {
+        disabled = true
+    }
+    
+    public func fetchChanges() {
+        guard disabled == false else { return }
+        for database in databases {
+            fetchChanges(from: database)
+        }
+    }
+    
+    public func checkiCloudAvailable(completion: @escaping (Bool) -> Void) {
+        CKContainer.default().accountStatus { (status, error) in
+            completion(status == .available)
         }
     }
     
@@ -65,6 +78,7 @@ public final class SyncEngine {
         let appState = UIApplication.shared.applicationState
         guard let userInfo = userInfo as? [String: NSObject],
             appState != .inactive else { return }
+        guard disabled == false else { return }
         
         let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
         guard let subscriptionID = notification.subscriptionID else { return }
@@ -84,7 +98,6 @@ public final class SyncEngine {
     // This method can be tr-entried
     //
     func postWhenOperationQueueClear(name: NSNotification.Name, object: Any? = nil) {
-        
         DispatchQueue.global().async {
             self.operationQueue.waitUntilAllOperationsAreFinished()
             DispatchQueue.main.async {
@@ -194,8 +207,20 @@ public final class SyncEngine {
     @objc func zoneCacheDidChange(_ notification: Notification) {
         guard let zoneChanges = (notification.object as? ZoneCacheDidChange)?.payload else { return }
         zoneChanges.database.fetchZoneChanges(zoneIDs: zoneChanges.zoneIDsChanged)
-        // TODO: Delete zone
         
+        performWriterBlock {
+            // Delete zones
+            let realm = try! Realm()
+            for zoneID in zoneChanges.zoneIDsDeleted {
+                let ownerName = zoneID.ownerName
+                for model in self.models {
+                    let toDeleteObjs = realm.objects(model).filter {$0.ownerName == ownerName }
+                    try! realm.write {
+                        realm.delete(toDeleteObjs)
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Others
@@ -211,17 +236,9 @@ public final class SyncEngine {
     }
     
     public func saveShare(record: CKRecord, completion:@escaping (CKShare?, Error?) -> Void) {
-        var share: CKShare?
-        if let shareID = record.share?.recordID {
-            share = KeyStore.shared.record(id: shareID.recordName) as? CKShare
-        }
-        
-        if share == nil {
-            share = CKShare(rootRecord: record)
-        }
-        
+        let share = CKShare(rootRecord: record)
         let modifyRecordsOperation = CKModifyRecordsOperation(
-            recordsToSave: [record, share!],
+            recordsToSave: [record, share],
             recordIDsToDelete: nil)
         
         modifyRecordsOperation.timeoutIntervalForRequest = 10
@@ -229,29 +246,20 @@ public final class SyncEngine {
         
         modifyRecordsOperation.modifyRecordsCompletionBlock =
             { records, recordIDs, error in
-                if error != nil {
-                    print(error!.localizedDescription)
-                } else {
-                    print("save share success")
-                }
-                
                 completion(share, error)
         }
         
-        container.privateCloudDatabase.add(modifyRecordsOperation)
+        modifyRecordsOperation.database = container.privateCloudDatabase
+        operationQueue.addOperation(modifyRecordsOperation)
     }
     
-//    public func addParty(email: String, to record: CKRecord) {
-//        var share: CKShare?
-//        if let shareID = record.share?.recordID {
-//            share = KeyStore.shared.record(id: shareID.recordName) as? CKShare
-//        }
-//        
-//        if share == nil {
-//            share = CKShare(rootRecord: record)
-//        }
-//        
-//        let participant = CKShareParticipant(coder: email)
-//    }
-
+    public func fetchShare(recordID: CKRecordID, isOwner: Bool, completion: @escaping (CKShare?, Error?) -> Void) {
+        let operation = CKFetchRecordsOperation(recordIDs: [recordID])
+        operation.fetchRecordsCompletionBlock = { info, error in
+            completion(info?[recordID] as? CKShare, error)
+        }
+        
+        operation.database =  isOwner ? container.privateCloudDatabase : container.sharedCloudDatabase
+        operationQueue.addOperation(operation)
+    }
 }

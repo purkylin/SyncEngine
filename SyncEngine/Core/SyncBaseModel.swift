@@ -11,6 +11,7 @@ import RealmSwift
 import CloudKit
 
 extension CKRecord {
+    /// Convert record to data which contain system fields
     func systemData() -> Data {
         let data = NSMutableData()
         let archiver = NSKeyedArchiver(forWritingWith: data)
@@ -20,20 +21,34 @@ extension CKRecord {
         return data as Data
     }
     
+    /// Get a instance from data
     static func recover(from data: Data) -> CKRecord? {
         let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
         unarchiver.requiresSecureCoding = true
         return CKRecord(coder: unarchiver)
     }
     
+    /// Get cache shared record
     public func sharedRecord() -> CKShare? {
         guard let id = share?.recordID.recordName else { return nil }
         return KeyStore.shared.record(id: id) as? CKShare
     }
+    
+    public var isOwner: Bool {
+        return self.creatorUserRecordID!.recordName == "__defaultOwner__"
+    }
+    
+    public var zoneName: String {
+        if isOwner {
+            return recordID.zoneID.zoneName
+        } else {
+            return share!.recordID.zoneID.zoneName
+        }
+    }
 }
 
 extension KeyStore {
-    func record(id: String) -> CKRecord? {
+    public func record(id: String) -> CKRecord? {
         guard let data = self[id], data.count > 0 else { return nil }
         return CKRecord.recover(from: data)
     }
@@ -43,21 +58,28 @@ extension KeyStore {
     }
 }
 
+private let excludeSyncPropertyNames = ["synced", "deleted", "ownerName", "readWrite", "modifiedAt"]
+private let defaultOwnerName = "__defaultOwner__"
+
 open class SyncBaseModel: Object {
     @objc public dynamic var id = UUID().uuidString
-    @objc public dynamic var createdAt = Date()
+    
+    // Only used in local, you shouldn't add these properties in dashboard
     @objc public dynamic var modifiedAt = Date()
     @objc public dynamic var deleted = false
     @objc public dynamic var synced = false
-    
-    @objc public dynamic var shared = false
-    @objc public dynamic var readWrite = false
-    
+    @objc public dynamic var readWrite = true
+    @objc public dynamic var ownerName = defaultOwnerName // used for shared
+
     static var recordType: String {
         return className()
     }
     
-    var recordID: CKRecordID {
+    public var shared: Bool {
+        return ownerName != defaultOwnerName
+    }
+    
+    public var recordID: CKRecordID {
         let zoneID = CKRecordZoneID(zoneName: customZoneName, ownerName: CKCurrentUserDefaultName)
         return CKRecordID(recordName: id, zoneID: zoneID)
     }
@@ -73,6 +95,10 @@ open class SyncBaseModel: Object {
         }
         
         for property in self.objectSchema.properties {
+            if excludeSyncPropertyNames.contains(property.name) {
+                continue
+            }
+            
             switch property.type {
             case .int, .string, .bool, .date, .float, .double:
                 record[property.name] = self.value(forKey: property.name) as? CKRecordValue
@@ -92,7 +118,10 @@ open class SyncBaseModel: Object {
         let model = modelClass.init()
         for property in model.objectSchema.properties {
             let key = property.name
-            model.setValue(record[key], forKey: key)
+            
+            if !excludeSyncPropertyNames.contains(key) {
+                model.setValue(record[key], forKey: key)
+            }
         }
         return model
     }

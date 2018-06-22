@@ -28,6 +28,8 @@ class EditViewController: UIViewController {
         let realm = try! Realm()
         try! realm.write {
             note!.title = textField.text ?? ""
+            note?.synced = false
+            note?.modifiedAt = Date()
             realm.add(note!)
         }
         

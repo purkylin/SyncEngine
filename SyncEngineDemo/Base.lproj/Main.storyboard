@@ -128,10 +128,10 @@
             </objects>
             <point key="canvasLocation" x="1807.2" y="139.880059970015"/>
         </scene>
-        <!--Info View Controller-->
+        <!--Info-->
         <scene sceneID="jAR-TB-en3">
             <objects>
-                <viewController id="TDW-1c-fqO" customClass="InfoViewController" customModule="SyncEngineDemo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Info" id="TDW-1c-fqO" customClass="InfoViewController" customModule="SyncEngineDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1Cr-sL-hYd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -228,6 +228,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="m14-Uq-D7B"/>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="countLabel" destination="adF-rJ-tsh" id="WyM-Z3-Bna"/>
                         <outlet property="createrLabel" destination="bRw-pU-1rb" id="ly5-VA-6WT"/>

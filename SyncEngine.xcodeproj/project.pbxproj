@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D24605020DD03D20091F4EC /* CKError+Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D24604F20DD03D20091F4EC /* CKError+Detail.swift */; };
 		0DC903D220C7CA040072B3D4 /* SyncEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DC903D020C7CA040072B3D4 /* SyncEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0DC903DE20C7CA780072B3D4 /* HandleCloudKitError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC903D920C7CA770072B3D4 /* HandleCloudKitError.swift */; };
 		0DC903DF20C7CA780072B3D4 /* CKDatabase+Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC903DA20C7CA770072B3D4 /* CKDatabase+Subscription.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D24604F20DD03D20091F4EC /* CKError+Detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKError+Detail.swift"; sourceTree = "<group>"; };
 		0DC903CD20C7CA040072B3D4 /* SyncEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SyncEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC903D020C7CA040072B3D4 /* SyncEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncEngine.h; sourceTree = "<group>"; };
 		0DC903D120C7CA040072B3D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				0DC903DC20C7CA770072B3D4 /* LocalCache.swift */,
 				0DC903DD20C7CA770072B3D4 /* Database.swift */,
 				0DC903ED20C7CD8E0072B3D4 /* DefaultsKey.swift */,
+				0D24604F20DD03D20091F4EC /* CKError+Detail.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				0DC903E420C7CAA70072B3D4 /* KeyStore.swift in Sources */,
 				0DC903DF20C7CA780072B3D4 /* CKDatabase+Subscription.swift in Sources */,
 				0DC903EC20C7CCFE0072B3D4 /* SyncBaseModel.swift in Sources */,
+				0D24605020DD03D20091F4EC /* CKError+Detail.swift in Sources */,
 				0DC903E120C7CA780072B3D4 /* LocalCache.swift in Sources */,
 				0DC903EE20C7CD8E0072B3D4 /* DefaultsKey.swift in Sources */,
 				0DC903E220C7CA780072B3D4 /* Database.swift in Sources */,

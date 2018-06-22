@@ -45,6 +45,7 @@ class ViewController: UIViewController {
     
     @IBAction func btnSyncClicked(_ sender: Any) {
         SyncEngine.default.sync()
+        SyncEngine.default.fetchChanges()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -58,7 +59,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDataSource {
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notes.count
     }
@@ -67,6 +68,18 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = notes[indexPath.row].title
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let action = UITableViewRowAction(style: .destructive, title: "Delete") { (rowAction, indexPath) in
+            let realm = try! Realm()
+            let obj = self.notes[indexPath.row]
+            try! realm.write {
+                obj.deleted = true
+                obj.synced = false
+            }
+        }
+        return [action]
     }
 }
 
