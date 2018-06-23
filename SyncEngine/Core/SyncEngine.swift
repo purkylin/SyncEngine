@@ -17,7 +17,7 @@ public final class SyncEngine {
     let container = CKContainer.default()
     let databases: [Database]
     
-    var disabled = false
+    var disabled = true
     
     internal var models = [SyncBaseModel.Type]()
     
@@ -48,17 +48,25 @@ public final class SyncEngine {
     }
     
     public func start() {
+        print("Start sync engine")
         disabled = false
+        
+        addZone(with: customZoneName, to: databases[0])
+
         // Add item CKSharingSupported in your Info.plist if you use share
         for database in databases {
             database.addSubscription(to: operationQueue)
         }
         
         fetchChanges()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(zoneCacheDidChange(_:)), name: .zoneCacheDidChange, object: nil)
     }
     
     public func stop() {
+        print("Stop sync engine")
         disabled = true
+        NotificationCenter.default.removeObserver(self)
     }
     
     public func fetchChanges() {
@@ -111,10 +119,6 @@ public final class SyncEngine {
             Database(cloudKitDB: container.privateCloudDatabase),
             Database(cloudKitDB: container.sharedCloudDatabase)
         ]
-        
-        addZone(with: customZoneName, to: databases[0])
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(zoneCacheDidChange(_:)), name: .zoneCacheDidChange, object: nil)
     }
     
     func fetchChanges(from database: Database) {
