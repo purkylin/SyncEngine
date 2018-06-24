@@ -10,6 +10,12 @@ import Foundation
 import CloudKit
 import RealmSwift
 
+internal func kinglog(_ string: String) {
+#if syncengine_sync_log
+    print(string)
+#endif
+}
+
 internal let customZoneName = "kingprivatezone"
 
 public final class SyncEngine {
@@ -234,7 +240,7 @@ public final class SyncEngine {
         acceptSharesOperation.acceptSharesCompletionBlock = { error in
             guard handleCloudKitError(error, operation: .acceptShare, alert: true) == nil else { return }
             // TODO: Fetch
-            print("access success")
+//            print("access success")
         }
         container.add(acceptSharesOperation)
     }

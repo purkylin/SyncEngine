@@ -51,6 +51,10 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
         }
         
         cloudKitDB.addDatabaseSubscription(subscriptionID: cloudKitDB.name, operationQueue: operationQueue) { error in
+            if error != nil {
+                kinglog("save subscription failed: \(error!.localizedDescription)")
+            }
+            
             guard handleCloudKitError(error, operation: .modifySubscriptions) == nil else { return }
             UserDefaults.standard.set(true, forKey: key)
         }
@@ -219,6 +223,7 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
                 obj.synced = true
                 obj.modifiedAt = Date()
                 obj.ownerName = record.recordID.zoneID.ownerName
+                kinglog("save record to db success")
                 
                 try! realm.write {
                     realm.add(obj, update: true)
@@ -251,17 +256,25 @@ class Database { // Wrap a CKDatabase, its change token, and its zones.
             }
         }
         
-        syncChanges(recordsToSave: toSaveRecords, recordIDsToDelete: toDeleteRecordIDs)
+        if toSaveRecords.count > 0 || toDeleteRecordIDs.count > 0 {
+            kinglog("sync: update(\(toSaveRecords.count)) delete(\(toDeleteRecordIDs.count))")
+            syncChanges(recordsToSave: toSaveRecords, recordIDsToDelete: toDeleteRecordIDs)
+        }
     }
     
     private func syncChanges(recordsToSave: [CKRecord]?, recordIDsToDelete: [CKRecordID]?) {
         let operation = CKModifyRecordsOperation(recordsToSave: recordsToSave, recordIDsToDelete: recordIDsToDelete)
         operation.modifyRecordsCompletionBlock = { (saveRecords, deleteRecordIDs, error) in
+            if error != nil {
+                kinglog(error!.localizedDescription)
+            }
+            
             let failure = self.retryWhenPossible(with: error, block: {
                 self.syncChanges(recordsToSave: saveRecords, recordIDsToDelete: deleteRecordIDs)
             })
             
             if failure == nil {
+                kinglog("sync success update \(saveRecords?.count ?? 0) delete \(deleteRecordIDs?.count ?? 0)")
                 self.performWriterBlock {
                     self.updateWithRecordsChanged(saveRecords ?? [])
                     self.updateWithRecordIDsDeleted(deleteRecordIDs ?? [])

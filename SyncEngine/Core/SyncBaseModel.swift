@@ -90,6 +90,7 @@ open class SyncBaseModel: Object {
             record = r
         } else {
             let typeName = type(of: self).recordType
+            assert(!typeName.contains("."), "Invalid class name, Model class should use @objc")
             record = CKRecord(recordType: typeName, recordID: recordID)
             KeyStore.shared.save(record: record)
         }
@@ -114,11 +115,13 @@ open class SyncBaseModel: Object {
     }
     
     public static func from(record: CKRecord) -> SyncBaseModel {
-        guard let modelClass = NSClassFromString(record.recordType) as? SyncBaseModel.Type else { return SyncBaseModel() }
+        guard let modelClass = NSClassFromString(record.recordType) as? SyncBaseModel.Type else {
+            fatalError("Invalid class name, Model class should use @objc")
+        }
+        
         let model = modelClass.init()
         for property in model.objectSchema.properties {
             let key = property.name
-            
             if !excludeSyncPropertyNames.contains(key) {
                 model.setValue(record[key], forKey: key)
             }
